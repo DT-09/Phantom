@@ -11,7 +11,7 @@
 .section .rodata
 usage: .ascii "PHANTOM — Assembly-native passive PCAP analyzer\nUsage: phantom [--json] <capture.pcap>\n"
 usage_len = . - usage
-version_text: .ascii "PHANTOM 0.2.0\n"
+version_text: .ascii "PHANTOM 0.3.0\n"
 version_len = . - version_text
 err_open: .ascii "phantom: cannot open input file\n"
 err_open_len = . - err_open
