@@ -7,7 +7,7 @@ PHANTOM is an operational Assembly-native offline PCAP analyzer. This document s
 - [x] x86-64 Assembly executable using direct Linux syscalls
 - [x] Static ELF64 link with no dynamic interpreter or undefined symbols
 - [x] Bounded 64 MiB input buffer and EINTR-safe reads
-- [x] Classic PCAP little-/big-endian parsing
+- [x] Classic PCAP little-/big-endian parsing, microsecond and nanosecond timestamp resolutions
 - [x] PCAP 2.4 and Ethernet link-type validation
 - [x] Record boundary, captured/original length, and capacity checks
 - [x] Ethernet II and one 802.1Q/802.1ad VLAN tag
