@@ -5,7 +5,7 @@
 | Format | Status | Notes |
 |---|---|---|
 | Classic PCAP, little-endian | Supported | Microsecond and nanosecond magic |
-| Classic PCAP, big-endian | Supported | Microsecond magic only |
+| Classic PCAP, big-endian | Supported | Microsecond and nanosecond magic |
 | PCAP-NG | Unsupported | Planned separately |
 
 | Ethernet link type | Supported | DLT 1 |
