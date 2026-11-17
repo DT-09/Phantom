@@ -115,6 +115,7 @@ flow_key: .skip 40
 .align 16
 flow_table: .skip 196608
 little_endian: .skip 8
+nano_precision: .skip 8
 json_mode: .skip 8
 snap_length: .long 0
 .section .text
@@ -198,12 +199,24 @@ _start:
     je .pcap_little
     cmp eax, 0xd4c3b2a1
     je .pcap_big
+    cmp eax, 0xa1b23c4d
+    je .pcap_nano_little
+    cmp eax, 0x4d3cb2a1
+    je .pcap_nano_big
     jmp .format_error
 .pcap_little:
     mov qword ptr [rip+little_endian], 1
     jmp .records_start
 .pcap_big:
     mov qword ptr [rip+little_endian], 0
+    jmp .records_start
+.pcap_nano_little:
+    mov qword ptr [rip+little_endian], 1
+    mov qword ptr [rip+nano_precision], 1
+    jmp .records_start
+.pcap_nano_big:
+    mov qword ptr [rip+little_endian], 0
+    mov qword ptr [rip+nano_precision], 1
 .records_start:
     /* Validate classic PCAP version 2.4 and Ethernet link type 1. */
     movzx eax, word ptr [rbx+4]
@@ -248,7 +261,12 @@ _start:
     je .timestamp_ready
     bswap eax
 .timestamp_ready:
-    cmp eax, 1000000
+    mov ecx, 1000000
+    cmp qword ptr [rip+nano_precision], 1
+    jne .timestamp_limit_ready
+    mov ecx, 1000000000
+.timestamp_limit_ready:
+    cmp eax, ecx
     jae .format_error
     mov eax, dword ptr [rbx+8]
     cmp qword ptr [rip+little_endian], 1
