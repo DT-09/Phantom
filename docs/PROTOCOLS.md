@@ -4,10 +4,10 @@
 
 | Format | Status | Notes |
 |---|---|---|
-| Classic PCAP, little-endian | Supported | Microsecond magic only |
+| Classic PCAP, little-endian | Supported | Microsecond and nanosecond magic |
 | Classic PCAP, big-endian | Supported | Microsecond magic only |
 | PCAP-NG | Unsupported | Planned separately |
-| Nanosecond PCAP | Unsupported | Rejected by magic validation |
+
 | Ethernet link type | Supported | DLT 1 |
 
 ## Link layer
