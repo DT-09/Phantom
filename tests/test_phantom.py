@@ -203,6 +203,10 @@ with tempfile.TemporaryDirectory() as td:
     check(fuzz_result.returncode == 0,
           f'malformed-frame smoke corpus crashed: {fuzz_result.stderr}')
 
+    version = subprocess.run([BIN, '--version'], text=True, capture_output=True)
+    check(version.returncode == 0 and version.stdout.strip() == 'PHANTOM 0.3.0',
+          f'version output incorrect: {version.stdout!r}')
+
     usage = subprocess.run([BIN], text=True, capture_output=True)
     check(usage.returncode != 0 and 'Usage:' in usage.stderr,
           'usage handling failed')
