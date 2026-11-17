@@ -58,7 +58,7 @@ The JSON output is suitable for downstream tooling. Example fields include packe
 - Flow keys are directional 5-tuples. The fixed table stores up to 4,096 distinct keys. Once full, additional insertion attempts increment `flow_table_overflow`; no eviction occurs.
 - Protocol counters describe structurally recognized headers, not security verdicts. Checksums are not validated.
 
-## Product and engineering direction\n\n- [Product vision](docs/VISION.md)\n- [Technical architecture](docs/ARCHITECTURE.md)\n- [Protocol support and parsing boundaries](docs/PROTOCOLS.md)\n- [Delivery roadmap](docs/ROADMAP.md)\n\n## Project layout
+## Product and engineering direction\n\n- [Product vision](docs/VISION.md)\n- [Technical architecture](docs/ARCHITECTURE.md)\n- [Protocol support and parsing boundaries](docs/PROTOCOLS.md)\n- [Delivery roadmap](docs/ROADMAP.md)\n- [Requirements and verification matrix](docs/REQUIREMENTS.md)\n\n## Project layout
 
 ```text
 src/phantom.S          x86-64 Assembly implementation
