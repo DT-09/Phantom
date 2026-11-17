@@ -6,7 +6,7 @@ PHANTOM reads classic PCAP captures and produces deterministic traffic summaries
 
 ## Capabilities
 
-- Classic PCAP reader with little- and big-endian file support.
+- Classic PCAP reader with little- and big-endian file support, including microsecond and nanosecond timestamp formats.
 - Bounded 64 MiB input buffer and strict record-boundary checks.
 - Ethernet II and one 802.1Q/802.1ad VLAN tag.
 - IPv4, IPv6, and bounded IPv6 extension-header traversal.
@@ -50,7 +50,7 @@ The JSON output is suitable for downstream tooling. Example fields include packe
 ## Important semantics and limits
 
 - PHANTOM is an **offline, passive analyzer**. It does not capture live interfaces, transmit packets, inject frames, scan hosts, spoof identities, or modify traffic.
-- Only classic microsecond-resolution PCAP with Ethernet link type is accepted. PCAP-NG and nanosecond PCAP are not supported.
+- Classic PCAP with Ethernet link type is accepted in microsecond and nanosecond timestamp resolutions, in both byte orders. PCAP-NG is not supported.
 - Captures are limited to 64 MiB and loaded into a fixed buffer. PHANTOM is not yet a streaming reader.
 - At most one VLAN tag is decoded.
 - IPv6 extension traversal is bounded by the captured payload length. ESP and unknown next-header values are not decoded.
