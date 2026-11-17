@@ -1,6 +1,6 @@
 # PHANTOM delivery status
 
-PHANTOM is an operational Assembly-native offline PCAP analyzer. This document separates implemented behavior from future scope.
+PHANTOM is an operational Assembly-native offline PCAP analyzer. The target product is defined in [VISION.md](VISION.md), and subsystem contracts are defined in [ARCHITECTURE.md](ARCHITECTURE.md). This document separates implemented behavior from future scope.
 
 ## Implemented
 
