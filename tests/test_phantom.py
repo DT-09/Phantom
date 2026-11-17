@@ -9,9 +9,9 @@ import tempfile
 
 BIN = os.path.abspath("build/phantom")
 
-def pcap(path, packets, endian='<', major=2, minor=4, linktype=1, snaplen=65535):
+def pcap(path, packets, endian='<', major=2, minor=4, linktype=1, snaplen=65535, magic=0xa1b2c3d4):
     with open(path, 'wb') as f:
-        f.write(struct.pack(endian+'IHHIIII', 0xa1b2c3d4, major, minor, 0, 0, snaplen, linktype))
+        f.write(struct.pack(endian+'IHHIIII', magic, major, minor, 0, 0, snaplen, linktype))
         for i, packet in enumerate(packets):
             f.write(struct.pack(endian+'IIII', 1700000000+i, 0, len(packet), len(packet)))
             f.write(packet)
@@ -70,6 +70,25 @@ with tempfile.TemporaryDirectory() as td:
     check(rb.returncode == 0, rb.stderr)
     check('IPv4:          1' in rb.stdout and 'UDP:           1' in rb.stdout,
           f'big-endian protocol decode failed\n{rb.stdout}')
+
+    # Nanosecond-resolution classic PCAP, both byte orders.
+    nano_le = os.path.join(td, 'nano-little.pcap')
+    pcap(nano_le, [ethernet(ipv4(udp(data=dns()), 17))], magic=0xa1b23c4d)
+    rnle = run(nano_le)
+    check(rnle.returncode == 0 and 'UDP:           1' in rnle.stdout,
+          f'little-endian nanosecond PCAP failed\\n{rnle.stderr}')
+    nano_be = os.path.join(td, 'nano-big.pcap')
+    pcap(nano_be, [ethernet(ipv4(udp(data=dns()), 17))],
+         endian='>', magic=0xa1b23c4d)
+    rnbe = run(nano_be)
+    check(rnbe.returncode == 0 and 'UDP:           1' in rnbe.stdout,
+          f'big-endian nanosecond PCAP failed\\n{rnbe.stderr}')
+    bad_nano = os.path.join(td, 'bad-nano-fraction.pcap')
+    with open(bad_nano, 'wb') as f:
+        f.write(struct.pack('<IHHIIII', 0xa1b23c4d, 2, 4, 0, 0, 65535, 1))
+        packet = ethernet(ipv4(udp(), 17))
+        f.write(struct.pack('<IIII', 1, 1000000000, len(packet), len(packet)) + packet)
+    check(run(bad_nano).returncode != 0, 'invalid nanosecond timestamp accepted')
 
     # IPv6 with a Destination Options extension header followed by UDP/DNS.
     ipv6_ext = os.path.join(td, 'ipv6-extension.pcap')
